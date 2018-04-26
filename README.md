@@ -15,23 +15,17 @@ What things you need to install the software and how to install them
 Give examples
 ```
 
-### Installing
+### Running the application
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+Make sure you have all the prerequisites installed and is connected to the internet.
+Then copy the following into RStudio console to run the app:
 
 ```
-until finished
+shiny::runGitHub("jamesadhitthana/UPH_SentimentForecast")
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+If all works well this is what will happen
+//INSERT SCREENSHOT HERE//
 
 ## Explanation
 
