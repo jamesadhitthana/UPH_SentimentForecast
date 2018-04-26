@@ -27,7 +27,7 @@ setup_twitter_oauth(consumer_key,consumer_secret,access_token,access_secret) #lo
 #-Start twitter search---------------
 kfc_tweet <- searchTwitter('kfc -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi') #download kfc tweets
 mcD_tweet <- searchTwitter('mcDonald -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi') #download mcd tweets
-dd_tweet <- searchTwitter('dunkin+donuts -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi') #download dunkindonuts tweets
+sb_tweet <- searchTwitter('starbucks -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi') #download starbucks tweets
 bk_tweet <- searchTwitter('burger+king -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi')
 wen_tweet <- searchTwitter('wendys -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi')
 ph_tweet <- searchTwitter('pizza+hut -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi')
@@ -50,7 +50,7 @@ head(mcD_tweet,5) #prints the first 5 tweets
 kfc_text <- sapply(kfc_tweet,function(x) x$getText())
 mcD_text <- sapply(mcD_tweet,function(x) x$getText())
 bk_text <- sapply(bk_tweet,function(x) x$getText())
-dd_text <- sapply(dd_tweet,function(x) x$getText())
+sb_text <- sapply(sb_tweet,function(x) x$getText())
 dom_text <- sapply(dom_tweet,function(x) x$getText())
 ph_text <- sapply(ph_tweet,function(x) x$getText())
 wen_text <- sapply(wen_tweet,function(x) x$getText())
@@ -70,7 +70,7 @@ head(mcD_text,5) #prints the first 5 tweets
 kfc_corpus <- Corpus(VectorSource(kfc_text))
 mcD_corpus <- Corpus(VectorSource(mcD_text))
 bk_corpus <- Corpus(VectorSource(bk_text))
-dd_corpus <- Corpus(VectorSource(dd_text))
+sb_corpus <- Corpus(VectorSource(sb_text))
 dom_corpus <- Corpus(VectorSource(dom_text))
 ph_corpus <- Corpus(VectorSource(ph_text))
 wen_corpus <- Corpus(VectorSource(wen_text))
@@ -105,12 +105,12 @@ bk_clean <- tm_map(bk_clean, stripWhitespace) #strip whitespace so that we can c
 bk_clean <- tm_map(bk_clean, content_transformer(tolower)) #switch to lower-case
 #bk_clean <- tm_map(bk_clean, removeWords, c("burger+king")) #remove the words that contain the searched word
 
-dd_clean <- tm_map(dd_corpus, removePunctuation) #remove punctuation
-dd_clean <- tm_map(dd_clean, removeNumbers) #remove numbers
-dd_clean <- tm_map(dd_clean, removeWords,stopwords('en')) #remove stopwords (english)
-dd_clean <- tm_map(dd_clean, stripWhitespace) #strip whitespace so that we can compare the words later
-dd_clean <- tm_map(dd_clean, content_transformer(tolower)) #switch to lower-case
-#dd_clean <- tm_map(dd_clean, removeWords, c("dunkin+donuts")) #remove the words that contain the searched word
+sb_clean <- tm_map(sb_corpus, removePunctuation) #remove punctuation
+sb_clean <- tm_map(sb_clean, removeNumbers) #remove numbers
+sb_clean <- tm_map(sb_clean, removeWords,stopwords('en')) #remove stopwords (english)
+sb_clean <- tm_map(sb_clean, stripWhitespace) #strip whitespace so that we can compare the words later
+sb_clean <- tm_map(sb_clean, content_transformer(tolower)) #switch to lower-case
+#sb_clean <- tm_map(sb_clean, removeWords, c("starbucks")) #remove the words that contain the searched word
 
 dom_clean <- tm_map(dom_corpus, removePunctuation) #remove punctuation
 dom_clean <- tm_map(dom_clean, removeNumbers) #remove numbers
@@ -144,7 +144,7 @@ mcD_cleaned_dataframe <- data.frame(text=sapply(mcD_clean, identity),
 bk_cleaned_dataframe <- data.frame(text=sapply(bk_clean, identity), 
                                    stringsAsFactors=F)
 
-dd_cleaned_dataframe <- data.frame(text=sapply(dd_clean, identity), 
+sb_cleaned_dataframe <- data.frame(text=sapply(sb_clean, identity), 
                                    stringsAsFactors=F)
 
 dom_cleaned_dataframe <- data.frame(text=sapply(dom_clean, identity), 
@@ -222,9 +222,9 @@ bk_scores = score.sentiment(bk_cleaned_dataframe$text,enPositiveWords,enNegative
 bk_scores$brand = "Burger King"
 bk_scores$code = "bk"
 
-dd_scores = score.sentiment(dd_cleaned_dataframe$text,enPositiveWords,enNegativeWords, .progress="text") #progress bar
-dd_scores$brand = "DunkinDonuts"
-dd_scores$code = "dd"
+sb_scores = score.sentiment(sb_cleaned_dataframe$text,enPositiveWords,enNegativeWords, .progress="text") #progress bar
+sb_scores$brand = "Starbucks"
+sb_scores$code = "sb"
 
 dom_scores = score.sentiment(dom_cleaned_dataframe$text,enPositiveWords,enNegativeWords, .progress="text") #progress bar
 dom_scores$brand = "Dominos"
@@ -245,7 +245,7 @@ wen_scores$code = "wen"
 
 #STEP 4 [Drawing & Combining Graphs]
 #Bind all scores into one variable (so that we can draw the graph)
-compiled_scores = rbind(kfc_scores,mcD_scores,bk_scores,dd_scores,dom_scores,ph_scores,wen_scores) #bind scores into a variable
+compiled_scores = rbind(kfc_scores,mcD_scores,bk_scores,sb_scores,dom_scores,ph_scores,wen_scores) #bind scores into a variable
 #used the binded scores and make it into histograms-------------------
 ggplot(data=compiled_scores) +
   geom_histogram(mapping=aes(x=score, fill=brand),binwidth=1) + #geom_bar
@@ -290,10 +290,10 @@ head(benchmark_data_frame,1)
 colnames(benchmark_data_frame) = c('brand','score') #change col1 name to brand and col2 name to score
 
 #Deleting unneeded rows (restaurants) that will not be analysed
-benchmark_data_frame <- benchmark_data_frame[-c(1,2,3,4,5,6,8,10,13,16,18),]  #delete rows not needed for benchmarking
-
+benchmark_data_frame <- benchmark_data_frame[-c(1,2,3,4,5,6,7,8,10,16,18),]  #delete rows not needed for benchmarking
+      #dd=7
 #Giving each restaurant a code
-benchmark_data_frame$code = c("dd",NA,"kfc","dom","bk","wen","ph","mcD")
+benchmark_data_frame$code = c(NA,"kfc","dom","sb","bk","wen","ph","mcD")
 
 #Merging sentiment scores and the benchmark scores in a single dataframe/table
 compare_data_frame = merge(sentimentDataFrame, benchmark_data_frame, by="code",suffixes=c(".tweets",".benchmark"))
@@ -323,9 +323,9 @@ wordcloud(mcD_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=
 bk_wordCloud <- tm_map(bk_clean, removeWords, c("burger+king","burger","king")) #remove the words that contain the searched word
 wordcloud(bk_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=rainbow(10))
 
-#wordcloud dd
-dd_wordCloud <- tm_map(dd_clean, removeWords, c("dunkin+donuts","dunkin")) #remove the words that contain the searched word
-wordcloud(dd_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=rainbow(10))
+#wordcloud sb
+sb_wordCloud <- tm_map(sb_clean, removeWords, c("starbucks")) #remove the words that contain the searched word
+wordcloud(sb_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=rainbow(10))
 
 #wordcloud dom
 dom_wordCloud <- tm_map(dom_clean, removeWords, c("dominos","pizza")) #remove the words that contain the searched word
@@ -341,7 +341,9 @@ wordcloud(wen_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=
 
 #END OF WORDCLOUD FUNCTIONS------------------------
 
-#Note buat Dean - 
+
+
+#-----------------------------------------START OF FORECAST------------
 #STEP 1: ini awalnya function delcaration
 #STEP 2: terus selanjutnya baru setup variablenya
 #STEP 3: nah baru dipaling bawah itu function buat grafiknya. langsung dipake aja function paling bawahnya dan itu nanti langsung bikin grafik
@@ -422,27 +424,69 @@ graph_forecast <- function(x){
 
 #Get ACSI Scores Table and keep only scores 2015-2017
 acsiYearsScore = readHTMLTable(benchmark_url,header=T, which=1, stringAsFactors=F) #get acsii chart
-acsiYearsScore=acsiYearsScore[,c(1,23,24,25)] #keep only col1,23,24,25 -- keeps name,and scores from 15,16,17
+acsiYearsScore=acsiYearsScore[,c(1,14,15,16,17,18,19,20,21,22,23,24,25)] #keep only col1 and col 14 to 25 -- keeps name,and scores for 2006-2017
 
 #create the variable to place years
-yearsWithScores = c(2015,2016,2017,2018) #years with scores available (ACSI + sentiment analysis score)
+yearsWithScores = c(2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018) #years with scores available (ACSI + sentiment analysis score)
 
-#Get and put 2015,2016,2017,2018 scores into a numeric array
+#Declare Functions for getting ACSI Scores per year#
+getAcsiScore2006 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"06"[brandRowNumber])))
+}
+getAcsiScore2007 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"07"[brandRowNumber])))
+}
+getAcsiScore2008 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"08"[brandRowNumber])))
+}
+getAcsiScore2009 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"09"[brandRowNumber])))
+}
+getAcsiScore2010 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"10"[brandRowNumber])))
+}
+getAcsiScore2011 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"11"[brandRowNumber])))
+}
+getAcsiScore2012 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"12"[brandRowNumber])))
+}
+getAcsiScore2013 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"13"[brandRowNumber])))
+}
+getAcsiScore2014 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"14"[brandRowNumber])))
+}
+getAcsiScore2015 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"15"[brandRowNumber])))
+}
+getAcsiScore2016 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"16"[brandRowNumber])))
+}
+getAcsiScore2017 <- function(brandRowNumber){
+  return(as.numeric(as.character(acsiYearsScore$"17"[brandRowNumber])))
+}
+#Declare functions to put ACSI scores and sentiment scores together
+getCollectedScores <- function(brandRowNumber,rowNumberFromCompareDataFrame){
+  return(c(getAcsiScore2006(brandRowNumber),getAcsiScore2007(brandRowNumber),getAcsiScore2008(brandRowNumber),getAcsiScore2009(brandRowNumber),getAcsiScore2010(brandRowNumber),getAcsiScore2011(brandRowNumber),getAcsiScore2012(brandRowNumber),getAcsiScore2013(brandRowNumber),getAcsiScore2014(brandRowNumber),getAcsiScore2015(brandRowNumber),getAcsiScore2016(brandRowNumber),getAcsiScore2017(brandRowNumber),compare_data_frame$score.tweets[rowNumberFromCompareDataFrame]))
+}
+
+#Get and put 2006-2018 scores into a numeric array
 #as.numeric and as.character is used because the number that is grabbed is a "factor" class and so has to be converted back into a number
-kfc_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[11])),as.numeric(as.character(acsiYearsScore$"16"[11])),as.numeric(as.character(acsiYearsScore$"17"[11])),compare_data_frame$score.tweets[4])
-mcD_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[19])),as.numeric(as.character(acsiYearsScore$"16"[19])),as.numeric(as.character(acsiYearsScore$"17"[19])),compare_data_frame$score.tweets[5])
-bk_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[14])),as.numeric(as.character(acsiYearsScore$"16"[14])),as.numeric(as.character(acsiYearsScore$"17"[14])),compare_data_frame$score.tweets[1])
-dd_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[7])),as.numeric(as.character(acsiYearsScore$"16"[7])),as.numeric(as.character(acsiYearsScore$"17"[7])),compare_data_frame$score.tweets[2])
-dom_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[12])),as.numeric(as.character(acsiYearsScore$"16"[14])),as.numeric(as.character(acsiYearsScore$"17"[12])),compare_data_frame$score.tweets[3])
-ph_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[17])),as.numeric(as.character(acsiYearsScore$"16"[17])),as.numeric(as.character(acsiYearsScore$"17"[17])),compare_data_frame$score.tweets[6])
-wen_collected_scores= c(as.numeric(as.character(acsiYearsScore$"15"[15])),as.numeric(as.character(acsiYearsScore$"16"[15])),as.numeric(as.character(acsiYearsScore$"17"[15])),compare_data_frame$score.tweets[7])
+kfc_collected_scores=getCollectedScores(11,3)
+mcD_collected_scores=getCollectedScores(19,4)
+bk_collected_scores=getCollectedScores(14,1)
+sb_collected_scores=getCollectedScores(13,6)
+dom_collected_scores=getCollectedScores(12,2)
+ph_collected_scores=getCollectedScores(17,5)
+wen_collected_scores=getCollectedScores(15,7)
 #---END OF MAKING VARIABLES
 
 #Use predict_score() function to get a table with predicted results using linear regression
 kfc_forecast_table <- predict_score(yearsWithScores, kfc_collected_scores)
 mcD_forecast_table <- predict_score(yearsWithScores, mcD_collected_scores)
 bk_forecast_table <- predict_score(yearsWithScores, bk_collected_scores)
-dd_forecast_table <- predict_score(yearsWithScores, dd_collected_scores)
+sb_forecast_table <- predict_score(yearsWithScores, sb_collected_scores)
 dom_forecast_table <- predict_score(yearsWithScores, dom_collected_scores)
 ph_forecast_table <- predict_score(yearsWithScores, ph_collected_scores)
 wen_forecast_table <- predict_score(yearsWithScores, wen_collected_scores)
@@ -458,8 +502,8 @@ graph_forecast(kfc_forecast_table)
 graph_forecast(mcD_forecast_table)
 #plot graph for bk
 graph_forecast(bk_forecast_table)
-#plot graph for dunkin
-graph_forecast(dd_forecast_table)
+#plot graph for starbucks
+graph_forecast(sb_forecast_table)
 #plot graph for dominos
 graph_forecast(dom_forecast_table)
 #plot graph for pizzahut
@@ -469,6 +513,7 @@ graph_forecast(wen_forecast_table)
 #-END OF GRAPHING PART!--
 
 #--GRAPH CHART FROM 2015 to 2018 --------------------------------
+
 #--Declare graph_forecastBefore() function to make graph for (2015-2018)--------------    
 graph_forecastBefore <- function(yearsWithScores, restaurantCollectedScores){
   ggplot() +
@@ -485,6 +530,15 @@ graph_forecastBefore <- function(yearsWithScores, restaurantCollectedScores){
 }
 #---END OF graph_forecastBefore() function delcaration ----------------------
 
+
+
+
+
+
+
+
+
+#----------SHINY-------------------------------------------#
 library(shiny)
 
 # Define UI for app that draws a histogram ----
@@ -504,7 +558,7 @@ ui <- fluidPage(
           "KFC (Yum! Brands)" = "kfc",
           "McDonalds" = "mcD",
           "Burger King" = "bk",
-          "Dunkin' Donuts" = "dd",
+          "Starbucks" = "sb",
           "Domino's" = "dom",
           "Pizza Hut (Yum! Brands)" = "ph",
           "Wendy's" = "wen"
@@ -570,8 +624,8 @@ server <- function(input, output, session) {
           scale = c(3, 0.5),
           colors = rainbow(10)
         ),
-        dd = wordcloud(
-          dd_wordCloud,
+        sb = wordcloud(
+          sb_wordCloud,
           min.freq = 4,
           random.order = F,
           scale = c(3, 0.5),
@@ -624,8 +678,8 @@ server <- function(input, output, session) {
       {graph_forecast(mcD_forecast_table)}
       else if(input$rest=="bk")
       {graph_forecast(bk_forecast_table)}
-      else if(input$rest=="dd")
-      {graph_forecast(dd_forecast_table)}
+      else if(input$rest=="sb")
+      {graph_forecast(sb_forecast_table)}
       else if(input$rest=="dom")
       {graph_forecast(dom_forecast_table)}
       else if(input$rest=="ph")
