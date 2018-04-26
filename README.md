@@ -60,6 +60,6 @@ coddeeeeeee
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
-
+* Customer satisfaction index of (2015-2017) by [ACSI - American Customer Satisfaction Index](http://www.theacsi.org/index.php?option=com_content&view=article&id=149&catid=&Itemid=214&i=Limited-Service+Restaurants)
 * Positive and negative word list by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar)
 * score.sentiment() function by [Jeffrey Breen](https://github.com/jeffreybreen/twitter-sentiment-analysis-tutorial-201107/blob/master/R/sentiment.R)
