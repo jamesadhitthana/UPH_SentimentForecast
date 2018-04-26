@@ -1,5 +1,5 @@
 # UPH_SentimentForecast
-One Paragraph of project description goes here
+The initial goal of our program is to find customer satisfaction in America for fast food restaurants by analysing tweets and creating a sentiment analysis using a technique called lexical analysis (matching words for positive/negative words). From the sentiment analysis, we created scored the restaurant on a scale of 0-100. Rather than just showing a text result of the sentiment score , we have created a histogram and a bar chart to view our sentiment scores in a better and more visual manner. We also implemented a word cloud so that you can see the words that frequently pops up in the tweets! However, we took things a lot further than just analysing sentiment scores! We also forecasted next year's satisfaction score by using linear regression techniques. We can then forecast the linear regression line and see whether it looks like it will go up or down and forecast the value of the satisfaction score too! In total we analysed 7 restaurants consisting of KFC, McDonald's, Burger King, Starbucks, Domino's, Pizza Hut, and Wendy’s.
 
 ## Getting Started
 
@@ -40,12 +40,21 @@ User can see information related to the brand that will be seen by pressing the 
 
 ![tutorial2](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial2.jpg)
 
+This is the view of the histogram after the user hits the view histogram button.
 
+![tutorial3](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial3.jpg)
 
+User can also display graph bar charts to show the sentiment score of each brand.
 
-//end tutorail
-//INSERT SCREENSHOT HERE//
+![tutorial4](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial4.jpg)
 
+Then, user can see the linear regression of each brand to see the analysis and prediction of customer satisfaction for the next year.
+
+![tutorial5](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial5.jpg)
+
+And the last, the user can see the word cloud that shows the word that often appears on Twitter related with the selected brand.
+
+![tutorial6](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial6.jpg)
 
 ## Our Goal
 
