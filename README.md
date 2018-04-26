@@ -1,11 +1,9 @@
 # UPH_SentimentForecast
-shiny::runGitHub("jamesadhitthana/UPH_SentimentForecast") #Copy this into RStudio console to run the app
-
 One Paragraph of project description goes here
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+To be able to run this Shiny app, you will need to have the following prerequesites and have follow the instructions below.
 
 ### Prerequisites
 
@@ -21,14 +19,11 @@ Libraries needed on R:
 - xml
 - ggplot2
 
-```
-Give examples
-```
 
 ### Running the application
 
 Make sure you have all the prerequisites installed and is connected to the internet.
-Then copy the following into RStudio console to run the app:
+Then copy the following into R console to run the app:
 
 ```
 shiny::runGitHub("jamesadhitthana/UPH_SentimentForecast")
