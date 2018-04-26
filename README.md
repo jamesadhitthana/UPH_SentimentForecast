@@ -32,13 +32,24 @@ shiny::runGitHub("jamesadhitthana/UPH_SentimentForecast")
 If all works well this is what will happen
 //INSERT SCREENSHOT HERE//
 
+## Our Goal
+
 ## Explanation
 
 blah
 
-### blahbla
+### searchTwitter
 
-blablabala
+To grab and download the tweets from twitter the ‘twitteR’ library is used. Before we can get started the consumer_key, consumer_secret,acces_token, and access_secret has to be activated first before we can access the twitter API via the twitteR library.
+```
+setup_twitter_oauth(consumer_key,consumer_secret,access_token,access_secret) #loads the keys
+```
+To actually search for the tweets, the searchTwitter() function is used and the data is put into the appropriate variables. For example for the kfc_tweets variable, the searchTwitter() function is used to search for the keyword: 'kfc'. Then "-filter:retweets" is used to prevent retweets from being downloaded. The "lang=en" parameter is used to search for only English tweets, and then "n=250" sets the number of tweets to fetch which is set to 250 tweets. The resultType is set to recent because we want the latest tweets. Last is the geocode which is set to the latitude, longitude, and radius that covers the map of USA so that we only get tweets from America.
+```
+kfc_tweet <- searchTwitter('kfc -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi') #download kfc tweets
+```
+
+
 
 ```
 coddeeeeeee
