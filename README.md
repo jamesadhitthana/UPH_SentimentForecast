@@ -9,7 +9,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Libraries needed on R:
+-twitteR
+-shiny
+-RCurl
+-wordcloud
+-tm
+-tmap
+-plyr
+-stringr
+-xml
+-ggplot2
 
 ```
 Give examples
