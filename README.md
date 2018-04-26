@@ -22,7 +22,7 @@ Libraries needed on R:
 
 ### Running the application
 
-Make sure you have all the prerequisites installed and is connected to the internet.
+Make sure you have all the prerequisites installed and you are connected to the internet.
 Then copy the following into R console to run the app:
 
 ```
@@ -61,5 +61,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-* Positive and Negative word list by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar)
+* Positive and negative word list by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar)
 * score.sentiment() function by [Jeffrey Breen](https://github.com/jeffreybreen/twitter-sentiment-analysis-tutorial-201107/blob/master/R/sentiment.R)
