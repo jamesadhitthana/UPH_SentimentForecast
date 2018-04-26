@@ -136,6 +136,9 @@ After all of that, all of the scores from all the restaurants are compiled into 
 compiled_scores = rbind(kfc_scores,mcD_scores,bk_scores,sb_scores,dom_scores,ph_scores,wen_scores) #bind scores into a variable
 ```
 
+![screenshotTableSentiment](https://github.com/jamesadhitthana/UPH_SentimentForecast)
+
+With all the scores combined, the total sentiment score will now be calculated. But first we have to extract the positive and negative numbers first which is done by this function.
 
 
 
