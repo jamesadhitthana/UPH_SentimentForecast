@@ -29,10 +29,7 @@ Then copy the following into R console to run the app:
 shiny::runGitHub("jamesadhitthana/UPH_SentimentForecast")
 ```
 
-If all works well this is what will happen
-//start tutoraial
-
-This is the main view when our shiny program is first run. 
+If all works well this is the main view when our shiny program is first run. 
 
 ![tutorial1](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial1.jpg)
 
@@ -56,11 +53,11 @@ And the last, the user can see the word cloud that shows the word that often app
 
 ![tutorial6](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial6.jpg)
 
-## Our Goal
+
 
 ## Explanation
 
-blah
+On this section, we will explain the techniques that we have used to achieve our results.
 
 ### searchTwitter
 
