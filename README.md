@@ -34,11 +34,11 @@ If all works well this is what will happen
 
 This is the main view when our shiny program is first run. 
 
-![tutorial1](https://github.com/jamesadhitthana/UPH_SentimentForecast)
+![tutorial1](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial1.jpg)
 
 User can see information related to the brand that will be seen by pressing the radio button available. After choosing a brand, the user can select the type of information that will be displayed by pressing the existing action button. There are 4 graphs that can be displayed: Histogram, Bar Chart, Linear Regression, Word Cloud. Specially for the Histogram and Bar Chart will show the graph of all existing brands in order to show the comparison.
 
-![tutorial1](https://github.com/jamesadhitthana/UPH_SentimentForecast)
+![tutorial2](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTutorial2.jpg)
 
 
 
@@ -136,7 +136,7 @@ After all of that, all of the scores from all the restaurants are compiled into 
 compiled_scores = rbind(kfc_scores,mcD_scores,bk_scores,sb_scores,dom_scores,ph_scores,wen_scores) #bind scores into a variable
 ```
 
-![screenshotTableSentiment](https://github.com/jamesadhitthana/UPH_SentimentForecast)
+![screenshotTableSentiment](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTable1.jpg)
 
 With all the scores combined, the total sentiment score will now be calculated. But first we have to extract the positive and negative numbers first which is done by this function.
 
