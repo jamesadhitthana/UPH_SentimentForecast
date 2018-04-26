@@ -61,4 +61,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
+* Positive and Negative word list by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar)
 * score.sentiment() function by [Jeffrey Breen](https://github.com/jeffreybreen/twitter-sentiment-analysis-tutorial-201107/blob/master/R/sentiment.R)
