@@ -140,9 +140,89 @@ compiled_scores = rbind(kfc_scores,mcD_scores,bk_scores,sb_scores,dom_scores,ph_
 
 With all the scores combined, the total sentiment score will now be calculated. But first we have to extract the positive and negative numbers first which is done by this function.
 
+### Graphing Histogram
+With the current results, we can graph a histogram that shows the sentiment scores from each of the restaurants using the ggplot library. 
 
+```
+ggplot(data=compiled_scores) +
+  geom_histogram(mapping=aes(x=score, fill=brand),binwidth=1) + #geom_bar
+  facet_grid(brand~.) + #make separate plot for each brand
+  theme_bw() + scale_colour_brewer() #add colors
+```
+![screenshotHistogram](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotHistogram.jpg)
 
+### Creating a Table with Total Sentiment Scores
 
+```
+compiled_scores$bigPositive = as.numeric(compiled_scores$score >= 1)
+compiled_scores$bigNegative = as.numeric(compiled_scores$score <= -1)
+#this returrns the scores that are above 1 and less than -1 (we dont need to calculate the 0 score)
+```
+
+Then we use the ratio of bigpositive to bigNegative as overall sentiment score for each brand. This is done by creating a dataframe called sentimentDataFrame by using the ddply() function. Other than creating a dataframe it adds a few columns and calculates the total.
+
+```
+sentimentDataFrame = ddply(compiled_scores, c('brand','code'),summarise,
+                           totalpositive=sum(bigPositive),totalNegative = sum(bigNegative))
+sentimentDataFrame$totalCount = sentimentDataFrame$totalpositive+sentimentDataFrame$totalNegative
+sentimentDataFrame$score = round(100*sentimentDataFrame$totalpositive/sentimentDataFrame$totalCount)
+```
+
+![screenshotNegPos](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotTablePositiveAndNegative.jpg)
+
+### Bar Chart
+We can create the bar chart from the data frame ccompare_data_frame.
+
+```
+barplot(
+        compare_data_frame$score.tweets,
+        main = "Sentiment Score",
+        names.arg = (compare_data_frame$brand.tweets),
+        xlab = "Fast Food Restaurants",
+        ylab = "Satisfaction Index"
+      )
+```
+![screenshotBarChart](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotBarChart.jpg)
+
+## Forecasting and Linear Regression
+
+Since the twitter API has its limitations for the free version, we were stuck with only being able to search tweets that has been tweeted for the past couple of days. Since we wanted to make a forecast of the future satisfaction score of customers, we enlisted the help of ACSI or the American Customer Satisfaction Index. This organization scores the customer satisfaction levels on various companies in the United States and gives out a customer satisfaction rating per year.
+
+Therefore we went into their website and got this table: http://www.theacsi.org/index.php?option=com_content&view=article&id=149&catid=&Itemid=214&i=Limited-Service+Restaurants and then extracted the data using the xml library and the readHTMLTable() function to extract the table into a dataframe.
+
+```
+readHTMLTable(benchmark_url,header=T, which=1, stringAsFactors=F)
+```
+![screenshottablehtmldef](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotReadHTMLTableDefault.jpg)
+
+The table is then processed so that we only get the columns that we need. 
+
+![screenshottablehtmlprocessed](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotReadHTMLTableProcessed.png)
+
+The columns are the years that are going to be analyzed. We have chosen to use their data from 2006-2017 score and then combine it with our 2018 sentiment score to forecast 2019’s score. With the value of customer satisfaction that has been obtained from 2006 - 2018, it will be made a linear model to perform the analysis. First, take a score table from ACSI from 2006 - 2017 and then combine with the score of sentiment analysis 2018 that has been obtained. To get the predicted value for 2019 from the previous year value, we created a function like the following:
+predict_score = function(x, y)
+In that function, we form a linear regression formula that will aim to get customer satisfaction predicted value for 2019. The formula is a standard linear regression formula that we have mapped out in R and adapted into our variables so that it would work with our graph and what we are trying to make.
+
+After the prediction value is obtained, it will be re-combined with customer satisfaction value in previous years, and then displayed in graph form. 
+The result will be something like this:
+
+![screenshotpredict](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotPredictedScoreSample.jpg)
+
+## Cross
+
+The cross technique we use in this program is one-cross sectional with sentiment analysis. Cross is done by taking data from several tweets on twitter and searching for positive and negative words from each tweet. The purpose of cross here is to describe the sentiments of many Americans on twitter about various fast food restaurants in the area.
+
+## wordcloud
+
+To create a wordcloud the wordcloud library is used. Then after processing the text by using the wordcloud() function from the wordcloud library. Basically the tweet will be cleaned first by removing the word “kfc” (removing the word that contains the searched word) and then made into a new variable “restaurant_wordCloud” then created into a wordcloud using the wordcloud() function. 
+
+```
+kfc_wordCloud <- tm_map(kfc_clean, removeWords, c("kfc")) #remove the words that contain the searched word
+wordcloud(kfc_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=rainbow(10))
+#The parameters are used to add the aesthetics and make it more readable.
+```
+
+![screenshotwc](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotWordCloudSample.jpg)
 
 
 ## Built With
