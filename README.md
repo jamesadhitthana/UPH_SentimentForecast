@@ -48,12 +48,8 @@ To actually search for the tweets, the searchTwitter() function is used and the 
 ```
 kfc_tweet <- searchTwitter('kfc -filter:retweets', lang="en",n=250,resultType="recent", geocode='37.0902,-95.7129,1500mi') #download kfc tweets
 ```
-
-
-
-```
-coddeeeeeee
-```
+bla bla lanjut lagi, ini blm selsai
+### next explanation/technique
 
 
 ## Built With
