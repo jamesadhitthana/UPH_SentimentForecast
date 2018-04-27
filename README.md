@@ -235,6 +235,10 @@ Shiny is used for GUI to display the dataframe that has been calculated. Shiny h
 actionButton is used as a trigger to plot something to Main Panel like Word Cloud, Histogram, Bar Chart, and Linear Regression
 radioButton is used to change restaurant to plot and to make word cloud. UI Part is about putting every button in Sidebar Panel and giving space to plot in Main Panel and the Server Part is about connecting each button in Sidebar Panel to Main Panel. All of the code is made into one file called app.r which contains the code for the ui.R and server.R.
 
+```
+shinyApp(ui, server) #function to run the ui and server on the same app.R file
+```
+
 This code is used for getting input from View Histogram button and displaying the plot. Using observeEvent function, server anticipating input from user and change the Main Panel.
 
 ```
@@ -249,7 +253,7 @@ observeEvent(input$viewHist, {
  })
 ```
 
-blabla
+This code is for displaying word cloud to Main Panel. By clicking View Word Cloud Button, this function is going to activate. The radio button is nothing selected at default. By selecting other restaurant, the Main Panel is printing word cloud according to which radio button is pressed.
 
 ```
 observeEvent(input$word, {
@@ -265,6 +269,8 @@ observeEvent(input$word, {
        ),
 ...#code continues on...
 ```
+
+There are many other codes that are used to set up the template and the design of the application.
 
 
 ## Built With
