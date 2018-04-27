@@ -230,10 +230,47 @@ wordcloud(kfc_wordCloud,min.freq =4, random.order = F, scale = c(3,0.5), colors=
 
 ![screenshotwc](https://raw.githubusercontent.com/jamesadhitthana/UPH_SentimentForecast/master/screenshotWordCloudSample.jpg)
 
+## Shiny
+Shiny is used for GUI to display the dataframe that has been calculated. Shiny has 2 parts : Main Panel and Side Panel. Sidebar Panel is used to display button that react according to user input. On the other hand, main panel is used to display plot that react according to which button is pressed. There are 2 type of button that has been used in Sidebar Panel : actionButton and radioButton
+actionButton is used as a trigger to plot something to Main Panel like Word Cloud, Histogram, Bar Chart, and Linear Regression
+radioButton is used to change restaurant to plot and to make word cloud. UI Part is about putting every button in Sidebar Panel and giving space to plot in Main Panel and the Server Part is about connecting each button in Sidebar Panel to Main Panel. All of the code is made into one file called app.r which contains the code for the ui.R and server.R.
+
+This code is used for getting input from View Histogram button and displaying the plot. Using observeEvent function, server anticipating input from user and change the Main Panel.
+
+```
+observeEvent(input$viewHist, {
+   output$Hist <- renderPlot({
+     ggplot(data = compiled_scores) +
+       geom_histogram(mapping = aes(x = score, fill = brand),
+                      binwidth = 1) + #geom_bar
+       facet_grid(brand ~ .) + #make separate plot for each brand
+       theme_bw() + scale_colour_brewer() #add colors
+   })
+ })
+```
+
+blabla
+
+```
+observeEvent(input$word, {
+   output$Hist <- renderPlot({
+     word <- switch(
+       input$rest,
+       kfc = wordcloud(
+         kfc_wordCloud,
+         min.freq = 4,
+         random.order = F,
+         scale = c(3, 0.5),
+         colors = rainbow(10)
+       ),
+...#code continues on...
+```
+
 
 ## Built With
 * [R](https://www.r-project.org/) - R Programming Language
 * [RStudio](https://www.rstudio.com/) - RStudio
+* [Shiny](https://shiny.rstudio.com/) - Shiny
 
 ## Authors
 
